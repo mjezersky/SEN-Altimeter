@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private SensorManager senManager;
     private TextView mainResult;
+    private TextView mainResultDecimal;
     private TextView sensorAPIResult;
     private TextView currentPressure;
     private TextView statusText;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //setSupportActionBar(toolbar);
 
         mainResult = (TextView) findViewById(R.id.mainResult);
+        mainResultDecimal = (TextView) findViewById(R.id.mainResultDecimal);
         sensorAPIResult = (TextView) findViewById(R.id.sensorAPIResult);
         currentPressure = (TextView) findViewById(R.id.currentPressure);
         statusText = (TextView) findViewById(R.id.statustext);
@@ -182,9 +184,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
         double result = Altimeter.calculate(pressure, slp, temp) + offset;
+        String resultString = String.format(Locale.UK, "%1.2f", result);
 
+        mainResult.setText(resultString.substring(0, resultString.length()-3));
+        mainResultDecimal.setText(resultString.substring(resultString.length()-3) + " m");
         currentPressure.setText(String.valueOf(pressure)+" hPa");
-        mainResult.setText(String.format(Locale.UK, "%1.2f", result) + " m");
         sensorAPIResult.setText(String.valueOf(SensorManager.getAltitude(SensorManager.PRESSURE_STANDARD_ATMOSPHERE, pressure)) + " m");
     }
 
